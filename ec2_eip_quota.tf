@@ -8,3 +8,12 @@ resource "aws_servicequotas_service_quota" "eip_increase" {
   service_code = "ec2"              # EC2 service code
   value        = 12                 # Requested new quota value
 }
+
+data "aws_servicequotas_service_quota" "check_eip" {
+  quota_code   = "L-0263D0A3"
+  service_code = "ec2"
+}
+
+output "current_eip_quota" {
+  value = data.aws_servicequotas_service_quota.check_eip.value
+}
