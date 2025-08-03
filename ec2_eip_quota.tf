@@ -1,6 +1,5 @@
 # Configure AWS provider
 provider "aws" {
-  region = "us-east-2"  # Change to your region
 }
 
 # Request quota increase for Elastic IPs
