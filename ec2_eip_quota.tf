@@ -1,7 +1,4 @@
 # Configure AWS provider
-provider "aws" {
-}
-
 # Request quota increase for Elastic IPs
 resource "aws_servicequotas_service_quota" "eip_increase" {
   quota_code   = "L-0263D0A3"       # Fixed quota code for VPC Elastic IPs
