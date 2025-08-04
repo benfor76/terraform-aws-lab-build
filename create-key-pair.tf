@@ -20,5 +20,5 @@ resource "local_file" "private_key" {
 # Output the private key (use with caution!)
 output "private_key" {
   value     = tls_private_key.ben_lab_key.private_key_pem
-  sensitive = false  # Marks output as sensitive
+  sensitive = true  # Marks output as sensitive
 }
