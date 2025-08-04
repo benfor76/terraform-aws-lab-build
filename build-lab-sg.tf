@@ -1,6 +1,6 @@
 resource "aws_security_group" "ben_lab_sg" {
   name        = "ben-lab-sg"
-  description = "Security group for Ben's Lab with multiple ingress rules"
+  description = "Ben Security group for lab"
   vpc_id      = aws_vpc.bens_vpc.id  # Reference to the VPC created earlier
 
   # SSH access
