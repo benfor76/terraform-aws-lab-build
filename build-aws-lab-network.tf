@@ -5,6 +5,7 @@ provider "aws" {
 # 1. Create VPC with IPv4 CIDR 10.0.0.0/24
 resource "aws_vpc" "bens_vpc" {
   cidr_block = "10.0.0.0/24"
+  enable_dns_hostnames = true
   tags = {
     Name = "Bens-Lab-Aug-25"
   }
