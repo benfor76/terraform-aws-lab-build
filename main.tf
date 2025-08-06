@@ -169,7 +169,7 @@ data "aws_secretsmanager_secret_version" "retrieved" {
   depends_on = [aws_secretsmanager_secret_version.lab_private_key]
 }
 
-# Output results
+## Output results
 output "key_pair_name" {
   value = aws_key_pair.generated_key.key_name
 }
