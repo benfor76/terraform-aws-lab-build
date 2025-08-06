@@ -160,7 +160,7 @@ resource "aws_secretsmanager_secret" "lab_private_key" {
 
 resource "aws_secretsmanager_secret_version" "lab_private_key" {
   secret_id     = aws_secretsmanager_secret.lab_private_key.id
-  secret_string = tls_private_key.key.lab_private_key_pem  # PEM-encoded private key
+  secret_string = tls_private_key.lab_private_key_pem  # PEM-encoded private key
 }
 
 # 4. Retrieve the private key from Secrets Manager
