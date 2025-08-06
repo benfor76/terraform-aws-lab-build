@@ -148,13 +148,13 @@ resource "tls_private_key" "key" {
 
 # 2. Create the AWS key pair
 resource "aws_key_pair" "generated_key" {
-  key_name   = "ben-lab-key-pair"  # Unique key name
+  key_name   = "ben1-lab-key-pair"  # Unique key name
   public_key = tls_private_key.key.public_key_openssh
 }
 
 # 3. Store private key in Secrets Manager
 resource "aws_secretsmanager_secret" "lab_private_key" {
-  name        = "ben-lab-key-pair/private"  # Secret name
+  name        = "ben1-lab-key-pair/private"  # Secret name
   description = "Private key for key pair ${aws_key_pair.generated_key.key_name}"
 }
 
