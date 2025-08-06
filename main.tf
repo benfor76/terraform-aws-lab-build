@@ -153,20 +153,20 @@ resource "aws_key_pair" "generated_key" {
 }
 
 # 3. Store private key in Secrets Manager
-resource "aws_secretsmanager_secret" "private_key" {
+resource "aws_secretsmanager_secret" "lab_private_key" {
   name        = "ben-lab-key-pair/private"  # Secret name
   description = "Private key for key pair ${aws_key_pair.generated_key.key_name}"
 }
 
-resource "aws_secretsmanager_secret_version" "private_key" {
-  secret_id     = aws_secretsmanager_secret.private_key.id
-  secret_string = tls_private_key.key.private_key_pem  # PEM-encoded private key
+resource "aws_secretsmanager_secret_version" "lab_private_key" {
+  secret_id     = aws_secretsmanager_secret.lab_private_key.id
+  secret_string = tls_private_key.key.lab_private_key_pem  # PEM-encoded private key
 }
 
 # 4. Retrieve the private key from Secrets Manager
 data "aws_secretsmanager_secret_version" "retrieved" {
-  secret_id = aws_secretsmanager_secret.private_key.id
-  depends_on = [aws_secretsmanager_secret_version.private_key]
+  secret_id = aws_secretsmanager_secret.lab_private_key.id
+  depends_on = [aws_secretsmanager_secret_version.lab_private_key]
 }
 
 # Output results
@@ -175,7 +175,7 @@ output "key_pair_name" {
 }
 
 output "secret_arn" {
-  value = aws_secretsmanager_secret.private_key.arn
+  value = aws_secretsmanager_secret.lab_private_key.arn
 }
 
 output "retrieved_private_key" {
