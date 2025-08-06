@@ -205,7 +205,7 @@ resource "aws_instance" "aap25vms" {
   vpc_security_group_ids      = [aws_security_group.ben_lab_sg.id]
   key_name                    = "ben-lab-key-pair"
 
-  # Root volume configuration
+  # #Root volume configuration
   root_block_device {
     volume_size = 200    # 200 GiB
     volume_type = "gp3"

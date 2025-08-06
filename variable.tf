@@ -1,3 +1,4 @@
+#
 variable "rhel_version" {
   description = "RHEL Version"
   default     = "RHEL9"
