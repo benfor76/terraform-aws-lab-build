@@ -219,3 +219,4 @@ resource "aws_instance" "aap25vms" {
     operating_system  = var.rhel_version
     usage             = "aap25 lab builds"
   }
+}
