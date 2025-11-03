@@ -193,3 +193,91 @@ resource "aws_instance" "aap26vms" {
     usage             = "aap26 lab builds"
   }
 }
+
+# Data source to discover the VPC (assuming you have one main VPC)
+
+# Alternatively, if you want to select VPC by tags, use this:
+data "aws_vpc" "selected" {
+  tags = {
+    Name = "Bens-Lab-AAP26-vpc"
+  }
+}
+
+# Data source to get all running EC2 instances
+data "aws_instances" "running_instances" {
+  instance_state_names = ["running"]
+}
+  
+# Create private hosted zone
+resource "aws_route53_zone" "private" {
+  name = "thatcigardude.com"
+  
+  vpc {
+    vpc_id = data.aws_vpc.selected.id
+  }
+  
+  tags = {
+    Name = "thatcigardude-com-private-zone"
+  }
+}
+
+# Create A records for the specified FQDNs
+resource "aws_route53_record" "controller" {
+  count = length(data.aws_instances.running_instances.private_ips) >= 1 ? 1 : 0
+  
+  zone_id = aws_route53_zone.private.zone_id
+  name    = "controller.thatcigardude.com"
+  type    = "A"
+  ttl     = 300
+  records = [data.aws_instances.running_instances.private_ips[0]]
+}
+
+resource "aws_route53_record" "gateway" {
+  count = length(data.aws_instances.running_instances.private_ips) >= 2 ? 1 : 0
+  
+  zone_id = aws_route53_zone.private.zone_id
+  name    = "gateway.thatcigardude.com"
+  type    = "A"
+  ttl     = 300
+  records = [data.aws_instances.running_instances.private_ips[1]]
+}
+
+resource "aws_route53_record" "pah" {
+  count = length(data.aws_instances.running_instances.private_ips) >= 3 ? 1 : 0
+  
+  zone_id = aws_route53_zone.private.zone_id
+  name    = "pah.thatcigardude.com"
+  type    = "A"
+  ttl     = 300
+  records = [data.aws_instances.running_instances.private_ips[2]]
+}
+
+resource "aws_route53_record" "eda" {
+  count = length(data.aws_instances.running_instances.private_ips) >= 4 ? 1 : 0
+  
+  zone_id = aws_route53_zone.private.zone_id
+  name    = "eda.thatcigardude.com"
+  type    = "A"
+  ttl     = 300
+  records = [data.aws_instances.running_instances.private_ips[3]]
+}
+
+resource "aws_route53_record" "pg" {
+  count = length(data.aws_instances.running_instances.private_ips) >= 5 ? 1 : 0
+  
+  zone_id = aws_route53_zone.private.zone_id
+  name    = "pg.thatcigardude.com"
+  type    = "A"
+  ttl     = 300
+  records = [data.aws_instances.running_instances.private_ips[4]]
+}
+
+resource "aws_route53_record" "en" {
+  count = length(data.aws_instances.running_instances.private_ips) >= 6 ? 1 : 0
+  
+  zone_id = aws_route53_zone.private.zone_id
+  name    = "en.thatcigardude.com"
+  type    = "A"
+  ttl     = 300
+  records = [data.aws_instances.running_instances.private_ips[5]]
+}
