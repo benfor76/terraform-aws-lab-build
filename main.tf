@@ -7,7 +7,7 @@ resource "aws_vpc" "bens_vpc" {
   cidr_block = "10.0.0.0/24"
   enable_dns_hostnames = true
   tags = {
-    Name = "Bens-Lab-Aug-25"
+    Name = "Bens-Lab-AAP26"
   }
 }
 
@@ -17,7 +17,7 @@ resource "aws_subnet" "bens_subnet" {
   cidr_block        = "10.0.0.0/25"
   availability_zone = "us-east-2a"  # Change if needed
   tags = {
-    Name = "Bens-Lab-Aug-25"
+    Name = "Bens-Lab-AAP26"
   }
 }
 
@@ -25,7 +25,7 @@ resource "aws_subnet" "bens_subnet" {
 resource "aws_internet_gateway" "bens_igw" {
   vpc_id = aws_vpc.bens_vpc.id
   tags = {
-    Name = "Bens-Lab-Aug-25"
+    Name = "Bens-Lab-AAP26"
   }
 }
 
@@ -33,7 +33,7 @@ resource "aws_internet_gateway" "bens_igw" {
 resource "aws_route_table" "bens_rt" {
   vpc_id = aws_vpc.bens_vpc.id
   tags = {
-    Name = "Bens-Lab-Aug-25"
+    Name = "Bens-Lab-AAP26"
   }
 }
 
@@ -136,7 +136,7 @@ resource "aws_security_group" "ben_lab_sg" {
   }
 
   tags = {
-    Name = "Bens-Lab-Aug-25"
+    Name = "Bens-Lab-AAP26"
   }
 }
 
@@ -153,7 +153,7 @@ data "aws_ami" "rhelami" {
   }
 }
 
-resource "aws_instance" "aap25vms" {
+resource "aws_instance" "aap26vms" {
   count                       = var.number_of_instances
   ami                         = data.aws_ami.rhelami.id
   instance_type               = "t2.xlarge"
@@ -174,6 +174,6 @@ resource "aws_instance" "aap25vms" {
     owner             = "bforrester"
     env               = "lab"
     operating_system  = var.rhel_version
-    usage             = "aap25 lab builds"
+    usage             = "aap26 lab builds"
   }
 }
