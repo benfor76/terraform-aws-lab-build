@@ -7,7 +7,7 @@ resource "aws_vpc" "bens_vpc" {
   cidr_block = "10.0.0.0/24"
   enable_dns_hostnames = true
   tags = {
-    Name = "Bens-Lab-AAP26"
+    Name = "Bens-Lab-AAP26-vpc"
   }
 }
 
