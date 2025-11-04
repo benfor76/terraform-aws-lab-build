@@ -170,7 +170,7 @@ data "aws_ami" "rhelami" {
 }
 
 resource "aws_instance" "aap26vms" {
-  count                       = var.number_of_instances
+  count                       = length(var.instance_names)
   ami                         = data.aws_ami.rhelami.id
   instance_type               = "t2.xlarge"
   associate_public_ip_address = true
@@ -191,12 +191,11 @@ resource "aws_instance" "aap26vms" {
     env               = "lab"
     operating_system  = var.rhel_version
     usage             = "aap26 lab builds"
+    Name              = var.instance_names[count.index]
   }
 }
 
-# Data source to discover the VPC (assuming you have one main VPC)
-
-# Alternatively, if you want to select VPC by tags, use this:
+# Select VPC by tags, use this:
 data "aws_vpc" "selected" {
   tags = {
     Name = "Bens-Lab-AAP26-vpc"

@@ -21,3 +21,9 @@ variable "number_of_instances" {
   type        = number
   default     = 8
 }
+
+variable "instance_names" {
+  description = "List of unique names for AAP instances"
+  type        = list(string)
+  default     = ["aap25controller", "aap25gateway", "aap25pah", "aap25eda", "aap25pg", "aap25en", "test1node", "test2node"]
+}
