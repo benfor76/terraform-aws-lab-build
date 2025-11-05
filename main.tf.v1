@@ -202,11 +202,6 @@ data "aws_vpc" "selected" {
   }
 }
 
- Data source to get all running EC2 instances
-data "aws_instances" "running_instances" {
-  instance_state_names = ["running"]
-}
-  
 # Create private hosted zone
 resource "aws_route53_zone" "private" {
   name = "thatcigardude.com"
@@ -220,22 +215,91 @@ resource "aws_route53_zone" "private" {
   }
 }
 
-locals {
-  instance_map = {
-    for idx, name in var.instance_names : name => {
-      id         = aws_instance.aap26vms[idx].id
-      private_ip = aws_instance.aap26vms[idx].private_ip
-    }
+# Data source to get all running instances
+data "aws_instances" "running_instances" {
+  instance_state_names = ["running"]
+}
+
+# Data source to get instance details for each tagged instance
+data "aws_instance" "controller" {
+  filter {
+    name   = "tag:Name"
+    values = ["aap25controller"]
+  }
+  
+  filter {
+    name   = "instance-state-name"
+    values = ["running"]
   }
 }
 
-# Create A records for the specified FQDNs
+data "aws_instance" "gateway" {
+  filter {
+    name   = "tag:Name"
+    values = ["aap25gateway"]
+  }
+  
+  filter {
+    name   = "instance-state-name"
+    values = ["running"]
+  }
+}
+
+data "aws_instance" "pah" {
+  filter {
+    name   = "tag:Name"
+    values = ["aap25pah"]
+  }
+  
+  filter {
+    name   = "instance-state-name"
+    values = ["running"]
+  }
+}
+
+data "aws_instance" "eda" {
+  filter {
+    name   = "tag:Name"
+    values = ["aap25eda"]
+  }
+  
+  filter {
+    name   = "instance-state-name"
+    values = ["running"]
+  }
+}
+
+data "aws_instance" "pg" {
+  filter {
+    name   = "tag:Name"
+    values = ["aap25pg"]
+  }
+  
+  filter {
+    name   = "instance-state-name"
+    values = ["running"]
+  }
+}
+
+data "aws_instance" "en" {
+  filter {
+    name   = "tag:Name"
+    values = ["aap25en"]
+  }
+  
+  filter {
+    name   = "instance-state-name"
+    values = ["running"]
+  }
+}
+
+# Create A records using the specific instance private IPs
 resource "aws_route53_record" "controller" {
   zone_id = aws_route53_zone.private.zone_id
   name    = "controller.thatcigardude.com"
   type    = "A"
   ttl     = 300
-  records = [local.instance_map["aap25controller"].private_ip]
+  records = [data.aws_instance.controller.private_ip]
 }
 
 resource "aws_route53_record" "gateway" {
@@ -243,7 +307,7 @@ resource "aws_route53_record" "gateway" {
   name    = "gateway.thatcigardude.com"
   type    = "A"
   ttl     = 300
-  records = [local.instance_map["aap25gateway"].private_ip]
+  records = [data.aws_instance.gateway.private_ip]
 }
 
 resource "aws_route53_record" "pah" {
@@ -251,7 +315,7 @@ resource "aws_route53_record" "pah" {
   name    = "pah.thatcigardude.com"
   type    = "A"
   ttl     = 300
-  records = [local.instance_map["aap25pah"].private_ip]
+  records = [data.aws_instance.pah.private_ip]
 }
 
 resource "aws_route53_record" "eda" {
@@ -259,7 +323,7 @@ resource "aws_route53_record" "eda" {
   name    = "eda.thatcigardude.com"
   type    = "A"
   ttl     = 300
-  records = [local.instance_map["aap25eda"].private_ip]
+  records = [data.aws_instance.eda.private_ip]
 }
 
 resource "aws_route53_record" "pg" {
@@ -267,7 +331,7 @@ resource "aws_route53_record" "pg" {
   name    = "pg.thatcigardude.com"
   type    = "A"
   ttl     = 300
-  records = [local.instance_map["aap25pg"].private_ip]
+  records = [data.aws_instance.pg.private_ip]
 }
 
 resource "aws_route53_record" "en" {
@@ -275,5 +339,5 @@ resource "aws_route53_record" "en" {
   name    = "en.thatcigardude.com"
   type    = "A"
   ttl     = 300
-  records = [local.instance_map["aap25en"].private_ip]
+  records = [data.aws_instance.en.private_ip]
 }
