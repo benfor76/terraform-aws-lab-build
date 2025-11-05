@@ -202,7 +202,7 @@ data "aws_vpc" "selected" {
   }
 }
 
- Data source to get all running EC2 instances
+# Data source to get all running EC2 instances
 data "aws_instances" "running_instances" {
   instance_state_names = ["running"]
 }
